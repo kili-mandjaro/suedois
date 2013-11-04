@@ -4,8 +4,8 @@ var Application = function()
 	this.intitule = document.querySelector("#intitule");
 	this.reponses = document.querySelector("#reponses");
 	this.arrayAnswers = new Array();
-	this.question = new Question("http://brindesable.olympe.in/suedois/src/ressources.xml", 's', "jobs");
-	this.docManager = new DocManager("http://brindesable.olympe.in/suedois/src/doc.xml");
+	this.question = new Question("/suedois/src/nouns.src", 's', "jobs");
+	this.docManager = new DocManager("/suedois/src/doc.xml");
 
 	//s : questions simples
 	
@@ -58,7 +58,7 @@ var Application = function()
 	
 	this.start = function()
 	{
-		this.question.loadXml();
+		this.question.loadTxt();
 		this.question.loadWords();
 		this.docManager.loadXml();
 		this.docManager.loadDocs();

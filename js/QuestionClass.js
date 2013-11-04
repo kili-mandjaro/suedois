@@ -1,7 +1,7 @@
-var Question = function(newXmlFile, newQuestionType, newCategory)
+var Question = function(newSrcFile, newQuestionType, newCategory)
 {
-	this.xmlFile = newXmlFile;
-	this.xmlContent = null;
+	this.srcFile = newSrcFile;
+	this.txtContent = null;
 	this.questionType = newQuestionType;
 	this.category = newCategory;
 	this.words = new Array();
@@ -11,31 +11,31 @@ var Question = function(newXmlFile, newQuestionType, newCategory)
 	this.score = 0;
 	
 
-	this.loadXml = function()
+	this.loadTxt = function()
 	{
 		if (window.XMLHttpRequest)
 	  		var xmlhttp = new XMLHttpRequest();
 		else
 	    	var xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	   
-		xmlhttp.open("GET", this.xmlFile, false);
+		xmlhttp.open("GET", this.srcFile, false);
+		xmlhttp.overrideMimeType("text/plain; charset=utf-8");
 		xmlhttp.send();
-		this.xmlContent = xmlhttp.responseXML; 
+		this.txtContent = xmlhttp.responseText; 
 	}
 	
 	this.loadWords = function()
 	{
+		var line = this.txtContent.split('\n');
 		
-		var xmlWords = this.xmlContent.querySelectorAll("words nouns " + this.category + " word");
-		
-		for(var i = 0; i < xmlWords.length; i++)
+		for(var i = 0; i < line.length; i++)
 		{
-			var wordFr = xmlWords[i].querySelector("fr").childNodes[0].nodeValue;
-			var wordSw = xmlWords[i].querySelector("sw").childNodes[0].nodeValue;
+			var wordFr = line[i].split(':')[0];
+			var wordSw = line[i].split(':')[1];
 			var newWord = new Word(wordFr, wordSw);
 			this.words.push(newWord);
 		}
-		this.nbQuestions = xmlWords.length * 2;
+		this.nbQuestions = line.length * 2;
 		
 		for(var i = 0; i < this.nbQuestions; i++)
 			this.remainingQuestions.push(i);
