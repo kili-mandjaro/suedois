@@ -27,15 +27,20 @@ var Question = function(newSrcFile, newQuestionType, newCategory)
 	this.loadWords = function()
 	{
 		var line = this.txtContent.split('\n');
+		var lineCounter = 0;
 		
 		for(var i = 0; i < line.length; i++)
 		{
-			var wordFr = line[i].split(':')[0];
-			var wordSw = line[i].split(':')[1];
-			var newWord = new Word(wordFr, wordSw);
-			this.words.push(newWord);
+			if(line[i].indexOf("//") == -1 && line[i].indexOf(":") != -1)
+			{
+				var wordFr = line[i].split(':')[0];
+				var wordSw = line[i].split(':')[1];
+				var newWord = new Word(wordFr, wordSw);
+				this.words.push(newWord);
+				lineCounter++;
+			}
 		}
-		this.nbQuestions = line.length * 2;
+		this.nbQuestions = lineCounter * 2;
 		
 		for(var i = 0; i < this.nbQuestions; i++)
 			this.remainingQuestions.push(i);
