@@ -18,7 +18,10 @@ function main()
 	addouml.onclick = function(){application.addChar("ö");}
 	addauml.onclick = function(){application.addChar("ä");}
 	ok.onclick = function(){application.launchGame();}
-	reload.onclick = function(){application.start(); application.launchGame();}
+	reload.onclick = function()
+	{
+		application.start();
+	}
 }
 
 document.onkeydown = function(event)

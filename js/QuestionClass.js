@@ -1,9 +1,9 @@
-var Question = function(newSrcFile, newQuestionType, newCategory)
+var Question = function(newSrcFile, newQuestionType)
 {
 	this.srcFile = newSrcFile;
 	this.txtContent = null;
 	this.questionType = newQuestionType;
-	this.category = newCategory;
+	this.categories = new Array();
 	this.words = new Array();
 	this.nbQuestions = 0;
 	this.remainingQuestions = new Array();
@@ -24,14 +24,43 @@ var Question = function(newSrcFile, newQuestionType, newCategory)
 		this.txtContent = xmlhttp.responseText; 
 	}
 	
-	this.loadWords = function()
+	this.loadCategories = function()
 	{
+		var line = this.txtContent.split('\n');		
+		for(var i = 0; i < line.length; i++)
+		{
+			if(line[i].indexOf("//") != -1)
+				this.categories.push(line[i].replace("//", ""));
+		}
+		return this.categories;
+	}
+	
+	this.reload = function()
+	{
+		this.score = 0;
+		this.categories = new Array();
+		this.nbQuestions = 0;
+		this.remainingQuestions = new Array();
+		this.words = new Array();
+	}
+	
+	this.loadWords = function(arrayCategories)
+	{
+		this.reload();
 		var line = this.txtContent.split('\n');
 		var lineCounter = 0;
+		var readWord = false;
 		
 		for(var i = 0; i < line.length; i++)
 		{
-			if(line[i].indexOf("//") == -1 && line[i].indexOf(":") != -1)
+			if(line[i].indexOf("//") != -1)
+			{					
+				if(arrayCategories.indexOf(line[i].replace("//", "").toLowerCase().trim()) != -1)
+					readWord = true;
+				else
+					readWord = false;
+			}
+			if(line[i].indexOf("//") == -1 && line[i].indexOf(":") != -1 && readWord)
 			{
 				var wordFr = line[i].split(':')[0];
 				var wordSw = line[i].split(':')[1];

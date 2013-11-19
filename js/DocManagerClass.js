@@ -16,7 +16,7 @@ var DocManager = function(newXmlFile)
 	   
 		xmlhttp.open("GET", this.xmlFile, false);
 		xmlhttp.send();
-		this.xmlContent = xmlhttp.responseXML; 
+		this.xmlContent = xmlhttp.responseXML;
 	}
 	
 	this.loadDocs = function()
@@ -38,7 +38,7 @@ var DocManager = function(newXmlFile)
 	
 	this.selectRandomDoc = function()
 	{
-		var randomNumber = Math.random(); 
+		var randomNumber = Math.random();
 		this.currentDoc = Math.floor(randomNumber * this.nbDocs);
 	}
 	
